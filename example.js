@@ -15,7 +15,7 @@ let options = {
   onRedirect: (res, options) => {
     let location = res.headers['location'];
     let newOption = {...options, url:location};
-    console.log("onRedirect to :", location);
+    // console.log("onRedirect to :", location);
     return newOption;
   }
 };

@@ -7,22 +7,22 @@ const httpsPromise = (options) => {
     let urlParts = url.parse(options.url);
     options.hostname = urlParts.hostname;
     options.path = urlParts.path;
-    console.log('options=', options);
+    // console.log('options=', options);
     var req = https.request(options, (res) => {
-      console.log(`STATUS: ${res.statusCode}`);
-      console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+      // console.log(`STATUS: ${res.statusCode}`);
+      // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
 
       res.setEncoding('binary');
       let buffers = [], size = 0;
 
       res.on('data', (chunk) => {
-        console.log('type of chunk=', Buffer.isBuffer(chunk));
+        // console.log('type of chunk=', Buffer.isBuffer(chunk));
         buffers.push(new Buffer(chunk, 'binary'));
         size += chunk.length;
         // console.log(`BODY: ${chunk}`);
       });
       res.on('end', () => {
-        console.log('No more data in response.');
+        // console.log('No more data in response.');
         let buffer = new Buffer(size), pos = 0;
         for(let i = 0, l = buffers.length; i < l; i++) {
             buffers[i].copy(buffer, pos);
