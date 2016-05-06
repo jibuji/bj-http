@@ -1,6 +1,6 @@
 {
   "name": "bj-http",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a simple http client for node",
   "main": "lib/index.js",
   "scripts": {

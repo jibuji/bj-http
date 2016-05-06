@@ -1,14 +1,20 @@
 import https from 'https';
+import http from 'http';
 import url from 'url';
 import iconv from 'iconv-lite';
 
 const httpsPromise = (options) => {
   return new Promise(function(resolve, reject) { 
     let urlParts = url.parse(options.url);
+    // console.log('urlParts: ', urlParts);
     options.hostname = urlParts.hostname;
     options.path = urlParts.path;
-    // console.log('options=', options);
-    var req = https.request(options, (res) => {
+    console.log('options=', options);
+    let client = https;
+    if (urlParts.protocol === 'http:') {
+      client = http;
+    }
+    var req = client.request(options, (res) => {
       // console.log(`STATUS: ${res.statusCode}`);
       console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
 
@@ -44,20 +50,26 @@ const httpsPromise = (options) => {
       console.log(`problem with request: ${e.message}`, e);
       reject(e);
     });
-
+    
+    let postData = options.postData;
+    if (postData) {
+      req.write(postData);
+    }
     req.end();
   });
 };
 
 const request = async (options) => {
-  let maxRedirects = options.maxRedirects;
-  for(;--maxRedirects >= 0;) {
+  if (!options.onEveryResponse) {
+    options.onEveryResponse = (res, options) => {
+     return null;
+    }
+  }
+  for(;;) {
     let res = await httpsPromise(options);
-    if (res.statusCode == 302) {
-      options = options.onRedirect(res, options);
-      if (options != null) {
-        continue
-      }
+    options = options.onEveryResponse(res, options);
+    if (options != null) {
+      continue;
     }
     return res;
   }
