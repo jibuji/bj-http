@@ -13,7 +13,7 @@ const cookieRedirectOption = (cookiesJar, res, options) => {
     cookies.forEach((cookie) => {
       cookiesJar.setCookieSync(cookie, options.url);
     });
-    console.log('setCookieSync success');
+    // console.log('setCookieSync success');
   }
   let location = res.headers['location'];
   if (!location) {

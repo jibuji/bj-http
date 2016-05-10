@@ -9,14 +9,14 @@ const httpsPromise = (options) => {
     // console.log('urlParts: ', urlParts);
     options.hostname = urlParts.hostname;
     options.path = urlParts.path;
-    console.log('options=', options);
+    // console.log('options=', options);
     let client = https;
     if (urlParts.protocol === 'http:') {
       client = http;
     }
     var req = client.request(options, (res) => {
       // console.log(`STATUS: ${res.statusCode}`);
-      console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+      // console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
 
       res.setEncoding('binary');
       let buffers = [], size = 0;
@@ -39,7 +39,7 @@ const httpsPromise = (options) => {
         if (contentType && contentType.match(/gbk/i)) {
           encoding = 'GBK';
         }
-        console.log('response encoding=', encoding);
+        // console.log('response encoding=', encoding);
         let str = iconv.decode(buffer, encoding);
         res.body = str;
         resolve(res);
